@@ -5,70 +5,99 @@
 #include <stdio.h>
 #include <dirent.h>
 #include <unistd.h>
+#include <stdlib.h>
 
-void get_print_all_files() {
+void print(char **str) {
+    int i = 0;
+    while (str[i] != NULL) {
+        printf("%s\t", str[i]);
+        i++;
+    }
+    printf("\n");
+}
+
+void get_sorted_files_by_character(char **str) {
+    for(int i = 0; i < strlen(str); i++) {
+        for(int j = 0; j < strlen(str) - i - 1; j++) {
+            if(str[j][0] > str[j+1][0]) {
+                char *temp = str[j];
+                str[j] = str[j+1];
+                str[j+1] = temp;
+            }
+        }
+    }
+    print(str);
+}
+
+
+void get_all_files(char *c) {
     DIR *dir;
-    struct dirent *str;
+    struct dirent *entry;
     dir = opendir(".");
+    char **str = malloc(sizeof(char *) * 100);
+    int index = 0;
+
     if (dir == NULL) {
         printf("Unable to open directory");
         return;
     }
-    while ((str = readdir(dir)) != NULL) {
-        if (str->d_name[0] != '.') {
-            printf("%s\t", str->d_name);
+    while ((entry = readdir(dir)) != NULL) {
+        if (entry->d_name[0] != '.') {
+            str[index++] = strdup(entry->d_name);
         }
     }
-    printf("\n");
+    get_sorted_files_by_character(str);
+
     closedir(dir);
+    free(str);
     // printf("Print all files\n");
 }
 
-void flag_a() {     // print_all_files_by_dot
+void flag_a(char *c) {     // print_all_files_by_dot
     DIR *dir;
-    struct dirent *str;
+    struct dirent *entry;
     dir = opendir(".");
+    char **str = malloc(sizeof(char *) * 100);
+    int index = 0;
+
     if (dir == NULL) {
         printf("Unable to open directory");
         return;
     }
-    while ((str = readdir(dir)) != NULL) {
-        printf("%s\t", str->d_name);
+    while ((entry = readdir(dir)) != NULL) {
+        str[index++] = strdup(entry->d_name);
     }
-    printf("\n");
+    get_sorted_files_by_character(str);
+
     closedir(dir);
+    free(str);
     // printf("Flag -a\n");
 }
-
-void flag_t() {     // print_all_files_by_time
+void flag_t(char *c) {     // print_all_files_by_time
     DIR *dir;
-    struct dirent *str;
-    struct dirent *temp;
+    struct dirent *entry;
     dir = opendir(".");
-    struct stat st;
-    struct stat stemp;
+    char **str = malloc(sizeof(char *) * 100);
+    int index = 0;
+
     if (dir == NULL) {
         printf("Unable to open directory");
         return;
     }
-    while ((str = readdir(dir)) != NULL) {
-        stat(str->d_name, &st);
-        stat(str->d_name, &stemp);
-        while((temp = readdir(dir))!= NULL && (st.st_mtime < stemp.st_mtime)) {
-            stemp.st_mtime = st.st_mtime;
-            str = temp;
+    while ((entry = readdir(dir)) != NULL) {
+        if (entry->d_name[0] != '.') {
+            str[index++] = strdup(entry->d_name);
         }
-        // printf("%s\t%ld\t", str->d_name, st.st_mtime);
-        printf("%s\t", temp->d_name);
-        // if (str->d_name[0] != '.') {
-        //     printf("%s\t", str->d_name);
-        // }
     }
-    printf("\n");
+    print(str);
+
+    closedir(dir);
+    free(str);
     // printf("Flag -t\n");
 }
 
-void flag_at() {
+void flag_at(char *c) {    // print_all_files_by_time_and_by_dot
+    printf("%s", c);
     printf("Flag -at\n");
 }
 
@@ -77,6 +106,7 @@ void get_flag(int ac, char** av) {
     int index_flag_a = 0;
     int index_flag_t = 0;
     int index_flag_at = 0;
+    char *c = ".";
 
     while(index < ac) {
         if(strcmp("-at", av[index]) == 0 || strcmp("-ta", av[index]) == 0) {
@@ -85,18 +115,21 @@ void get_flag(int ac, char** av) {
             index_flag_a = 1;
         } else if(strcmp("-t", av[index]) == 0) {
             index_flag_t = 1;
+        } else {
+            c = av[index];
+            printf("%s:\n", c);
         }
         index += 1;
     }
 
     if((index_flag_a == 1 && index_flag_t == 1) || index_flag_at == 1) {
-        flag_at();
+        flag_at(c);
     } else if(index_flag_a == 1 && index_flag_t == 0) {
-        flag_a();
+        flag_a(c);
     } else if(index_flag_t == 1 && index_flag_a == 0) {
-        flag_t();
+        flag_t(c);
     } else {
-        get_print_all_files();
+        get_all_files(c);
     }
 }
 
