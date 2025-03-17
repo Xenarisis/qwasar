@@ -1,0 +1,50 @@
+body {
+    margin: 0px !important;
+    height: 100vh;
+    width: 100vw;
+}
+div{
+    display: flex;
+    flex-flow: column wrap;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+}
+#desktop{
+    height: 20vh;
+}
+.Header{
+    background-color: #00B7EB;
+}
+.Hero{
+    background-color: #FF0000;
+}
+.Content{
+    background-color: #00FF00;
+}
+.Sidebar{
+    background-color: #800080;
+}
+.Footer{
+    background-color: #444444;
+}
+@media only screen and (min-width: 640px){
+    .Content{
+        float: left;
+        width: 50%;
+        height: 25vh;
+    }
+    .Sidebar{
+        margin-left: 50%;
+        width: 50%;
+        height: 25vh;
+    }
+     #desktop{
+         height: 25vh;
+     }
+}
+@media only screen and (max-width: 640px){
+    #mobile{
+        height: 20vh;
+    }
+}

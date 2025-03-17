@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html style="background-color: black">
+    <div
+        id="my_bouncing_box"
+        style="background-color: blue; border-radius: 3px; position: absolute; left: 0px; top: 0px; min-width: 100px; min-height: 100px; text-align: center; font-weight: bold; color: #999;"
+    >
+        robert_r
+    </div>
+    <script type="text/javascript">
+        var box = document.getElementById("my_bouncing_box");
+        var topbox = parseInt(box.style.top);
+        var leftbox = parseInt(box.style.left);
+        var maxleft = window.innerWidth - 100;
+        var maxtop = window.innerHeight - 100;
+        var veriftop ;
+        var verifleft ;
+
+        setInterval(my_bouncing_box, 3);
+        function my_bouncing_box()
+        {
+
+            if(leftbox == 0){
+                verifleft = 0 ;
+            }
+            else if(leftbox == maxleft){
+                verifleft = 1 ;
+            }
+            if(topbox == 0 ){
+                veriftop = 0 ;
+            }
+            else if(topbox == maxtop){
+                veriftop = 1 ;
+            }
+
+            
+            if(verifleft == 0 && veriftop == 0)
+            {
+                topbox += 1 ;
+                leftbox += 1 ;
+            }
+            if(verifleft == 0 && veriftop == 1)
+            {
+                leftbox += 1 ;
+                topbox -= 1 ;
+            }
+            if(verifleft == 1 && veriftop == 0)
+            {
+                leftbox -= 1 ;
+                topbox += 1 ;
+                
+            }
+            if( verifleft == 1 && veriftop == 1 )
+            {
+                leftbox -= 1 ;
+                topbox -= 1 ;
+            }
+            box.style.top = topbox + "px";
+            box.style.left = leftbox + "px";
+
+        }
+    </script>
+</html>

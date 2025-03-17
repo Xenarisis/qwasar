@@ -1,0 +1,24 @@
+<html>
+    <div
+        id="my_box_realtime"
+        style="background-color: red; position: absolute; right: 70px; bottom: 70px; min-width: 100px; min-height: 100px"
+    ></div>
+    <script type="text/javascript">
+    var box = document.getElementById("my_box_realtime");
+    var right = parseInt(box.style.right);
+    var bottom = parseInt(box.style.bottom);
+
+    setInterval(my_box_realtime, 500);
+        function my_box_realtime()
+        {
+            if( right > 0 && bottom > 0 )
+            {
+                right -= 1 ; 
+                bottom -= 1 ;
+                box.style.right = right + "px" ;
+                box.style.bottom = bottom + "px" ;
+            }
+        }
+        //clearInterval(my_box_realtime);
+    </script>
+</html>
