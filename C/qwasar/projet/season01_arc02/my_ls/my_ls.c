@@ -30,7 +30,7 @@ void get_sorted_files_by_character(char **str, int size) {
     while(str[index] != NULL) {
         n = '\0';
         for(int i = 0; i < size; i++) {
-            if(str[i][2] > str[index][2]) {
+            if(str[i][0] > str[index][0]) {
                 n = i;
             }
         }
